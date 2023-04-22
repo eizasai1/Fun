@@ -23,6 +23,8 @@ public class ServerSetup extends Thread{
             throw new RuntimeException(e);
         }
     }
+    public ServerSetup() {
+    }
     public void sendMessage(String message) throws IOException{
         if (message.length() == 0)
             return;
