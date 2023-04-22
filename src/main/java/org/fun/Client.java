@@ -30,8 +30,8 @@ public class Client extends Thread{
             String line;
             while ((line = br.readLine()) != null) {
                 message += line + "\n";
-                if (message.strip().startsWith("Directory: ") && commands.startsWith("cd")) {
-                    directory = message.strip().split(" ")[1].split("\n")[0];
+                if (line.strip().startsWith("Directory: ") && commands.startsWith("cd")) {
+                    directory = line.strip().substring("Directory:".length(), line.strip().length());
                 }
             }
             br.close();
