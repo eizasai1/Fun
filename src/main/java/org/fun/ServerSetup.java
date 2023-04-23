@@ -10,49 +10,35 @@ public class ServerSetup extends Thread{
     private BufferedReader bufferedReader;
     private DataInputStream input;
     private DataOutputStream output;
-    public ServerSetup(int port) {
-        try {
-            serverSocket = new ServerSocket(port);
-            clientSocket = serverSocket.accept();
-            System.out.println("Connected to " + clientSocket.getInetAddress().getHostAddress());
-            input = new DataInputStream(clientSocket.getInputStream());
-            bufferedReader = new BufferedReader(new InputStreamReader(input));
-            output = new DataOutputStream(clientSocket.getOutputStream());
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public ServerSetup() {
+    public ServerSetup(int port) throws IOException{
+        serverSocket = new ServerSocket(port);
+        clientSocket = serverSocket.accept();
+        System.out.println("Connected to " + clientSocket.getInetAddress().getHostAddress());
+        input = new DataInputStream(clientSocket.getInputStream());
+        bufferedReader = new BufferedReader(new InputStreamReader(input));
+        output = new DataOutputStream(clientSocket.getOutputStream());
     }
     public void sendMessage(String message) throws IOException{
         if (message.length() == 0)
             return;
         output.writeChars(message + "`");
     }
-    public static String getHostAddress() {
-        try {
-            return InetAddress.getLocalHost().getHostAddress();
-        }
-        catch (IOException e) {
-            throw new RuntimeException("error getting host");
-        }
+    public static String getHostAddress() throws IOException {
+        return InetAddress.getLocalHost().getHostAddress();
     }
-    public void communicationLoop() {
+    public void communicationLoop() throws IOException {
         System.out.println("communication available");
         while (true) {
             Scanner scanner = new Scanner(System.in);
-            try {
-                sendMessage(scanner.nextLine());
-            }
-            catch (IOException e){
-                try {
-                    serverSocket.close();
-                }
-                catch (IOException e2) {
-                    throw new RuntimeException(e);
-                }
-            }
+            sendMessage(scanner.nextLine());
+        }
+    }
+    public void closeServer() {
+        try {
+            serverSocket.close();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     @Override
@@ -78,6 +64,7 @@ public class ServerSetup extends Thread{
                     }
                 }
             } catch (IOException e) {
+                this.closeServer();
                 throw new RuntimeException(e);
             }
         }

@@ -7,6 +7,11 @@ public class Host {
         this.address = address;
         this.port = port;
     }
+    public Host(String address) {
+        String[] fullAddress = address.strip().split(" ");
+        this.address = fullAddress[0];
+        this.port = Integer.parseInt(fullAddress[1]);
+    }
     public String getAddress() {
         return address;
     }
