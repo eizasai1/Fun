@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.URL;
-import java.nio.Buffer;
 
 public class WebHTTP {
     private String host;
@@ -29,7 +28,7 @@ public class WebHTTP {
             URL url = new URL(connect);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
-            httpURLConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            httpURLConnection.setRequestProperty("User-Agent", "Vic");
             int responseCode = httpURLConnection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader bufferedReader = new BufferedReader(
