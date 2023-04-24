@@ -83,7 +83,7 @@ public class WebHTTP extends Thread{
         return toReturn;
     }
     public String httpGet(int[] result) throws IOException{
-        URL url = new URL(this.url + "GET");
+        URL url = new URL(this.url + "/GET");
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod("GET");
         httpURLConnection.setRequestProperty("User-Agent", "Vic");
@@ -104,7 +104,7 @@ public class WebHTTP extends Thread{
         return message;
     }
     public int httpPost(String out) throws IOException{
-        URL url = new URL(this.url + "POST");
+        URL url = new URL(this.url + "/POST");
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod("POST");
         httpURLConnection.setRequestProperty("User-Agent", "Vic");

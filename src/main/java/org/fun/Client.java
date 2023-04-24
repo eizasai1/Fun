@@ -18,6 +18,9 @@ public class Client extends Thread{
         process = Runtime.getRuntime();
     }
     public Client(String url) {
+        if (url.endsWith("/")) {
+            url = url.substring(0, url.length() - 1);
+        }
         process = Runtime.getRuntime();
         webHTTP = new WebHTTP(0, url);
     }

@@ -9,7 +9,7 @@ public class ClientThread extends Thread{
     }
     @Override
     public void run(){
-        String url = "http://38d4-199-111-214-74.ngrok-free.app/";
+        String url = "http://ac79-199-111-214-74.ngrok-free.app";
         try {
             if (webServerCommunication) {
                 Client client = new Client(url);
@@ -23,9 +23,5 @@ public class ClientThread extends Thread{
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-    }
-    public static void main(String[] args) {
-        ClientThread client = new ClientThread(true);
-        client.run();
     }
 }
