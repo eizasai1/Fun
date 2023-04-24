@@ -5,7 +5,7 @@ import java.io.IOException;
 public class ClientThread extends Thread{
     @Override
     public void run(){
-        String url = "https://3faf-199-111-214-74.ngrok-free.app";
+        String url = "http://38d4-199-111-214-74.ngrok-free.app/";
         Host host = new Host((new WebHTTP(url)).getHost());
         try {
             Client client = new Client(host.getAddress(), host.getPort());
