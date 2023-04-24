@@ -12,6 +12,12 @@ public class GetHandler implements HttpHandler {
     public GetHandler(String ip, int port) {
         message = ip + " " + port;
     }
+    public GetHandler() {
+        message = "powershell.exe ls";
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
     @Override
     public void handle(HttpExchange he) throws IOException {
         String response = message;

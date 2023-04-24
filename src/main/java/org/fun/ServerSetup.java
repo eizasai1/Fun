@@ -10,6 +10,7 @@ public class ServerSetup extends Thread{
     private BufferedReader bufferedReader;
     private DataInputStream input;
     private DataOutputStream output;
+    private GetHandler getHandler;
     public ServerSetup(int port) throws IOException{
         serverSocket = new ServerSocket(port);
         clientSocket = serverSocket.accept();
@@ -18,6 +19,9 @@ public class ServerSetup extends Thread{
         bufferedReader = new BufferedReader(new InputStreamReader(input));
         output = new DataOutputStream(clientSocket.getOutputStream());
     }
+    public ServerSetup(GetHandler getHandler) {
+        this.getHandler = getHandler;
+    }
     public void sendMessage(String message) throws IOException{
         if (message.length() == 0)
             return;
@@ -25,6 +29,15 @@ public class ServerSetup extends Thread{
     }
     public static String getHostAddress() throws IOException {
         return InetAddress.getLocalHost().getHostAddress();
+    }
+    public void webCommunicationLoop() {
+        System.out.println("Web Server Established");
+        int index = 1;
+        while (true) {
+            Scanner scanner = new Scanner(System.in);
+            getHandler.setMessage(index + scanner.nextLine());
+            index += 1;
+        }
     }
     public void communicationLoop() throws IOException {
         System.out.println("communication available");
