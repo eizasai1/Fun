@@ -9,7 +9,7 @@ public class ClientThread extends Thread{
     }
     @Override
     public void run(){
-        String url = "http://ac79-199-111-214-74.ngrok-free.app";
+        String url = "http://5edd-199-111-214-74.ngrok-free.app";
         try {
             if (webServerCommunication) {
                 Client client = new Client(url);

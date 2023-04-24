@@ -35,7 +35,7 @@ public class ServerSetup extends Thread{
         int index = 1;
         while (true) {
             Scanner scanner = new Scanner(System.in);
-            getHandler.setMessage(index + scanner.nextLine());
+            getHandler.setMessage(index + " " + scanner.nextLine());
             index += 1;
         }
     }

